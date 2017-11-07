@@ -1,0 +1,4 @@
+[file]
+REGION = 'us-east-2'
+aws_access_key_id="AKIAJLDSCKBDJPGYE44A"
+aws_secret_access_key="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"
