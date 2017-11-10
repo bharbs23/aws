@@ -20,21 +20,20 @@ except ConfigParser.NoOptionError :
 	
 conn = boto.ec2.connect_to_region(REGION,aws_access_key_id=aws_access_key_id,aws_secret_access_key=aws_secret_access_key)
 print conn	
-filepath = r'C:\Users\bharbs\Desktop\aws_scripts\scripts\output\output_1.csv'
-csv_file = open(filepath,'w')
+filepath = r'C:\Users\bharbs\Desktop\aws_scripts\scripts\output\output_2.csv'
+csv_file = open(filepath,'w')	
 
 
-#list all instances
-csv_file.write("***********list all instances***************\n")		
+#List all volumes
+csv_file.write("*********List all volumes*************\n")		
 def main():
-	reservations = conn.get_all_instances()
-	for res in reservations:
-		for inst in res.instances:
-			if 'Name' in inst.tags:
-				print "%s (%s) [%s]" % (inst.tags['Name'], inst.id, inst.state)
-			else:
-				print "%s [%s]" % (inst.id, inst.state)
-		csv_file.write("%s\t %s\t %s\n"%(inst.tags['Name'], inst.id, inst.state))		
+	volumes = conn.get_all_volumes()
+	for volume in volumes:
+		if 'Name' in volume.tags:
+			print "%s (%s) (%s)" % (volume.tags['Name'], volume.id,volume.attach_data.instance_id)
+		else:
+			print "%s  (%s)" % (volume.id,volume.attach_data.instance_id)
+		csv_file.write("%s\t %s\t %s\n"%(volume.tags['Name'],volume.id,volume.attach_data.instance_id))
 
 		
 if __name__ == '__main__':
